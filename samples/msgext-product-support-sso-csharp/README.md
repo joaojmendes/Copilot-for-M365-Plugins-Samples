@@ -1,6 +1,6 @@
 ---
 page_type: sample
-description: This sample implements a Teams message extension that can be used as a plugin for Microsoft Copilot for Microsoft 365. The message extension enables users to query the Products list in the Product support SharePoint Online team site via Microsoft Graph.
+description: This sample implements a Teams message extension that can be used as a plugin for Microsoft 365 Copilot. The message extension enables users to query the Products list in the Product support SharePoint Online team site via Microsoft Graph.
 products:
 - office-teams
 - copilot-m365
@@ -12,7 +12,7 @@ languages:
 
 ![License.](https://img.shields.io/badge/license-MIT-green.svg)
 
-This sample implements a Microsoft Teams message extension that can be used as a plugin for Microsoft Copilot for Microsoft 365. The message extension allows users to query items in the Products list in the [Product support](https://lookbook.microsoft.com/details/81e2fee3-02a0-427b-af8b-8c7f42010fde) SharePoint Online team site via Microsoft Graph. Whilst this sample uses Microsoft Graph, the approach used in this sample can be used to call any API that uses OAuth 2.0 authentication.
+This sample implements a Microsoft Teams message extension that can be used as a plugin for Microsoft 365 Copilot. The message extension allows users to query items in the Products list in the [Product support](https://lookbook.microsoft.com/details/81e2fee3-02a0-427b-af8b-8c7f42010fde) SharePoint Online team site via Microsoft Graph. Whilst this sample uses Microsoft Graph, the approach used in this sample can be used to call any API that uses OAuth 2.0 authentication.
 
 ![Screenshot of the sample extension working in Copilot in Microsoft Teams](./assets/product-card.png)
 
@@ -21,16 +21,25 @@ This sample implements a Microsoft Teams message extension that can be used as a
 - [Visual Studio 2022 17.9+](https://visualstudio.microsoft.com)
 - [Teams Toolkit](https://learn.microsoft.com/microsoftteams/platform/toolkit/toolkit-v4/install-teams-toolkit-vs?pivots=visual-studio-v17-7)
 - Azure subscription
-- You will need a Microsoft work or school account with [permissions to upload custom Teams applications](https://learn.microsoft.com/microsoftteams/platform/concepts/build-and-test/prepare-your-o365-tenant#enable-custom-teams-apps-and-turn-on-custom-app-uploading). The account will also need a Microsoft Copilot for Microsoft 365 license to use the extension in Copilot.
+- [PnP PowerShell](https://pnp.github.io/powershell)
+- You will need a Microsoft work or school account with [permissions to upload custom Teams applications](https://learn.microsoft.com/microsoftteams/platform/concepts/build-and-test/prepare-your-o365-tenant#enable-custom-teams-apps-and-turn-on-custom-app-uploading). The account will also need a Microsoft 365 Copilot license to use the extension in Copilot.
 
 ## Minimal path to awesome
 
 ### 1. Prepare SharePoint Online
 
-- Using [SharePoint look book](https://lookbook.microsoft.com) service, provision a new SharePoint Online team site using the [Product support](https://lookbook.microsoft.com/details/81e2fee3-02a0-427b-af8b-8c7f42010fde) template
+- Create a new SharePoint Team site
+  - Site type: Team site
+  - Site name: Product support
+  - Site address: productmarketing
+- Download the [Product Support provisioning template](https://download-directory.github.io/?url=https%3A%2F%2Fgithub.com%2FSharePoint%2Fsp-dev-provisioning-templates%2Ftree%2Fmaster%2Ftenant%2Fproductsupport) source files and extract the contents of the ZIP to a folder
+- Open a PowerShell terminal session
+- Install PnP PowerShell, execute `Install-Module PnP.PowerShell -Scope CurrentUser`
+- Connect to the SharePoint Online Admin Center site and follow the authentication steps, execute `Connect-PnPOnline -Url https://<tenant>-admin.sharepoint.com -DeviceLogin`, replacing `<tenant>` with your tenant name
+- Change to the folder where you extracted the source files to
+- Apply the template to the Product support SharePoint site, execute `Invoke-PnPTenantTemplate -Path .\productsupport.pnp`
+- Open a browser window and navigate to the Product support site
 - In the Products list, [create indexes](https://support.microsoft.com/en-us/office/add-an-index-to-a-list-or-library-column-f3f00554-b7dc-44d1-a2ed-d477eac463b0) on the `Title` and `RetailCategory` columns
-
-> NOTE: If you can't use the SharePoint look book service, you can find the source files to create it manually in the [SharePoint look book repository](https://github.com/SharePoint/sp-dev-provisioning-templates/tree/master/tenant/productsupport)
 
 ### 2. Prepare and run project
 
@@ -48,7 +57,7 @@ This sample implements a Microsoft Teams message extension that can be used as a
 
 ### 3. Test in Copilot
 
-- In Microsoft Teams, open the M365 Chat app
+- In Microsoft Teams, open the Copilot app
 - Open the prompts flyout and enable `Product support` plugin
 - Enter `Find Contoso products aimed at individuals` in the message box and press <kbd>Enter</kbd>
 - Copilot will respond with a message saying that it cannot find any information about a Contoso products aimed at individuals in the enterprise search results

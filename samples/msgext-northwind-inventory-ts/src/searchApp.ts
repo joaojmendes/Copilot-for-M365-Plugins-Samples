@@ -8,7 +8,6 @@ import {
 } from "botbuilder";
 import productSearchCommand from "./messageExtensions/productSearchCommand";
 import discountedSearchCommand from "./messageExtensions/discountSearchCommand";
-import revenueSearchCommand from "./messageExtensions/revenueSearchCommand";
 import actionHandler from "./adaptiveCards/cardHandler";
 import { CreateActionErrorResponse } from "./adaptiveCards/utils";
 
@@ -30,9 +29,6 @@ export class SearchApp extends TeamsActivityHandler {
       case discountedSearchCommand.COMMAND_ID: {
         return discountedSearchCommand.handleTeamsMessagingExtensionQuery(context, query);
       }
-      case revenueSearchCommand.COMMAND_ID: {
-        return revenueSearchCommand.handleTeamsMessagingExtensionQuery(context, query);
-      }
     }
 
   }
@@ -51,9 +47,13 @@ export class SearchApp extends TeamsActivityHandler {
           case 'cancel': {
             return actionHandler.handleTeamsCardActionCancelRestock(context);
           }
-          default:
+          case 'refresh': {
+            return actionHandler.handleTeamsCardActionRefresh(context);
+          }
+          default: {
+            console.log ('Unknown Invoke activity received');
             return CreateActionErrorResponse(400, 0, `ActionVerbNotSupported: ${context.activity.value.action.verb} is not a supported action verb.`);
-         
+          }
         }
      
     } catch (err) {
